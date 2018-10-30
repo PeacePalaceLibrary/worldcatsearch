@@ -1,9 +1,5 @@
 <?php
 
-require './OCLC/Auth/WSKey.php';
-require './OCLC/User.php';
-
-//TODO functions in een apart bestand
 
 function get_config($file_name) {
 	//reads a json file with data needed for connecting to the API
@@ -31,26 +27,11 @@ function get_config($file_name) {
 	}
 }
 
-function get_auth_header($config) {
-	if (array_key_exists('wskey',$config) && array_key_exists('secret',$config)) {
-		$options = array();
-		if (array_key_exists('institution',$config) && array_key_exists('ppid',$config) && array_key_exists('ppid_namespace',$config)) {
-			//uses OCLC provided programming to get an autorization header
-			$user = new User($config['institution'], $config['ppid'], $config['ppid_namespace']);
-			$options['user'] = $user;
-		}
-		$wskey = new WSKey($config['wskey'], $config['secret'], $options);
-		$authorizationHeader = $wskey->getHMACSignature('GET', $config['url'], $options);
-		//check??
-		array_push($config['headers'],'Authorization: '.$authorizationHeader);
-	}
-	return $config;
-}
 
 function API_request($config) {
 	$curl = curl_init();
 	
-	curl_setopt($curl, CURLOPT_URL, $config['url']);
+	curl_setopt($curl, CURLOPT_URL, $config['url'].$config['query']."&wskey=".$config['wskey']);
 	curl_setopt($curl, CURLOPT_HTTPHEADER, $config['headers']);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 	//curl_setopt($curl, CURLOPT_, );
@@ -66,13 +47,11 @@ function API_request($config) {
 	return $result;
 }
 
-$config = get_config('./config/config_loopbonnen.json');
+$config = get_config('./config/config.json');
 if ($config === FALSE) {
 	//something went wrong, no file or a json syntax error
 }
 else {
-	//add authorization header to the headers in config
-	$config = get_auth_header($config);
 	$result = API_request($config);
 }
 ?>
