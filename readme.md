@@ -1,4 +1,4 @@
-# Circulation
+# WorldCat Search
 
-Simple setup for connecting to OCLC's circulation API.
+Simple setup for connecting to OCLC's WorldCat Search API.
 
