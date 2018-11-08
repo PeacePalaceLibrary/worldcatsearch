@@ -1,32 +1,6 @@
 <?php
 
-
-function get_config($file_name) {
-	//reads a json file with data needed for connecting to the API
-	//returns FALSE if something goes wrong
-	if (file_exists($file_name)) {
-
-		$file_read = file_get_contents($file_name);
-		if ($file_read === FALSE) {
-			//echo "file $file_name could not be read.";
-			return FALSE;
-		}
-		else {
-			$config = json_decode ($file_read, TRUE);
-			if (json_last_error() == JSON_ERROR_NONE) {
-				return $config;
-			}
-			else {
-				echo json_last_error_msg();
-				return FALSE;
-			}
-		}
-	}
-	else {
-		return array();
-	}
-}
-
+require './config/config.php';
 
 function API_request($config) {
 	$curl = curl_init();
@@ -47,13 +21,8 @@ function API_request($config) {
 	return $result;
 }
 
-$config = get_config('./config/config.json');
-if ($config === FALSE) {
-	//something went wrong, no file or a json syntax error
-}
-else {
-	$result = API_request($config);
-}
+$result = API_request($config);
+
 ?>
 
 <html>
