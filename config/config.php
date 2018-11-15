@@ -32,6 +32,6 @@ $config['read_url'] = "http://www.worldcat.org/webservices/catalog/content";
 $config['read_params'] = [
   'wskey' => $config['wskey']
 ];
-$config['read_headers'] = ["Accept: application/json","wskey: ".$config['wskey']];
+$config['read_headers'] = ["Accept: application/json"]; //["Accept: application/json","wskey: ".$config['wskey']];
 
 ?>

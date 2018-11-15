@@ -32,15 +32,16 @@ function WC_read_request($config,$ocn) {
 	curl_setopt($curl, CURLOPT_HTTPHEADER, $config['read_headers']);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 	
-	/*
+	
 	curl_setopt($curl, CURLOPT_VERBOSE, true);
 	$verbose = fopen('stderr.txt', 'w+');
-	*/
+	
 
 	$result = curl_exec($curl);
-	//echo 'Result: '.$result;
+	//let op alleen xml wordt ondersteund, geen json
+	echo "\n".'Result: '.$result;
 	$error_number = curl_errno($curl);
-  //echo "Error: ".$error_number." - ".curl_error($curl);
+  echo "Error: ".$error_number." - ".curl_error($curl);
 	
 	if ($error_number) {
 		$result = "Error: ".$error_number.": ".curl_error($curl)."\n".$result;
@@ -61,7 +62,7 @@ function WC_read_request($config,$ocn) {
 		<p>Config:
 			<pre><?php echo json_encode($config, JSON_PRETTY_PRINT);?></pre>
 		</p>
-    <?php $result = WC_read_request($config,"920681646"); ?>
+    <?php $result = WC_read_request($config,"500182032"); ?>
 		<p>Read ocn: 496689980 
 			<pre><?php echo json_encode($result, JSON_PRETTY_PRINT);?></pre>
 		</p>
